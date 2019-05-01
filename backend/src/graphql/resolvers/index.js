@@ -1,7 +1,9 @@
 const userAuthResolver = require('./userauth');
 const departmentResolver = require('./department');
+const categoryResolver = require('./category');
 const rootResolver = {
     ...userAuthResolver,
-    ...departmentResolver
+    ...departmentResolver,
+    ...categoryResolver
 }
 module.exports = rootResolver;

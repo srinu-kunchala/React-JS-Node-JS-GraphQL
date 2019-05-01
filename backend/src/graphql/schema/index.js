@@ -18,13 +18,24 @@ module.exports = buildSchema(`
         name:String!
         description:String!
     }
+    type Category{
+        _id:ID!
+        name:String!
+        description:String!
+    }
+    input CategoryInput{
+        name:String!
+        description:String!
+    }
     type RootQuery{
         users : [User!]!
         departments : [Department!]!
+        categories : [Category!]!
     }
     type RootMutation{
         createUser(userInput: UserInput): User
         createDepartment(departmentInput: DepartmentInput) : Department
+        createCategory(categoryInput : CategoryInput) : Category
     }
     schema {
         query:RootQuery
