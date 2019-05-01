@@ -43,7 +43,7 @@ render(){
         <div className="departmentlist">
            <ul> {
                 departments.map((departmentList, index) =>(
-                    <li key={index} id={departmentList.id}>{departmentList.name}</li>
+                    <li key={index} id={departmentList._id}>{departmentList.name}</li>
                 ))
             }
             </ul>

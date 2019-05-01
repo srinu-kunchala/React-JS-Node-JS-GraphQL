@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import auth0Client from './Auth';
+import apiUrl from './api';
 
 class Callback extends Component {
   constructor(props){
@@ -19,7 +20,7 @@ class Callback extends Component {
         }
       }`
     }
-    fetch('http://localhost:3001/graphql', {
+    fetch(apiUrl, {
       method:'POST',
       body:JSON.stringify(requestBody),
       headers: {
