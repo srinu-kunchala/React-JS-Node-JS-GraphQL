@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import auth0Client from './Auth';
-import apiUrl from './api';
+import {API_ROOT} from './api';
 
 class Callback extends Component {
   constructor(props){
@@ -20,7 +20,7 @@ class Callback extends Component {
         }
       }`
     }
-    fetch(apiUrl, {
+    fetch(API_ROOT, {
       method:'POST',
       body:JSON.stringify(requestBody),
       headers: {

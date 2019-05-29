@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import auth0Client from '../Auth';
 import jwtDecode from 'jwt-decode';
+import Departments from '../components/Departments';
 
 class NavBar extends Component{     
     signOut(e,thisRef, idtoken, expiresAt) {        
@@ -25,6 +26,7 @@ class NavBar extends Component{
         }
     return null;
     }
+    
     render(){
         let cookieValue;        
         cookieValue = this.getCookie('idtoken');
@@ -38,13 +40,14 @@ class NavBar extends Component{
                     <Link className="navbar-brand" to="/">
                         Home
                     </Link>
+                    <Departments />
                     {
                        !auth0Client.isAuthenticated() && 
                         <button className="btn btn-dark" onClick={auth0Client.signIn}>Sign In</button>
                     }
                     {
                         auth0Client.isAuthenticated() &&
-                        <div>                            
+                        <div>                                                    
                         <label className="mr-2 text-white">{userName}</label>
                         <button className="btn btn-dark" onClick={(e)=>this.signOut(e,this,"idtoken", "expiresAt")}>Sign Out</button>
                         </div>

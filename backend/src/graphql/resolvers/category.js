@@ -1,7 +1,13 @@
 const Category = require('../../models/category');
 const categoryResolver = {
-    categories:()=> {
-        return Category.find();
+    categories:(args)=> {
+        return Category.find({department_id:args.department_id})
+        .then((catData) =>{
+            return catData;
+        })        
+        .catch(err=>{
+            throw err;
+        });
     },
     createCategory:(args)=>{       
         return Category.findOne({name:args.categoryInput.name})
