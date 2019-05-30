@@ -1,8 +1,7 @@
 import React, { Component} from "react";
 import {connect} from "react-redux";
 import {getProducts} from "../../redux/actions/products";
-import {API_ROOT, SERVER_ROOT} from '../../api';
-import auth0Client from '../../Auth';
+import { SERVER_ROOT} from '../../api';
 import { LinkContainer } from "react-router-bootstrap";
 import { Button } from 'react-bootstrap';
 class Products extends Component{
@@ -23,100 +22,41 @@ class Products extends Component{
         }else{
            props = this.props;
         }
-        if((props.products.data !== undefined && props.products.data !== null)){ 
+        if((props.products !== undefined && props.products !== null)){ 
             if(this.state.data){            
-                if(props.products.data === this.state.data)
+                if(props.products === this.state.data)
                 {
-                    let catids_arr = JSON.stringify(props.cat_ids);        
-                    const queryBody = {
-                    query:`
-                        query{
-                            products(cat_id:${catids_arr}){                  
-                                _id
-                                name
-                                description
-                                price
-                                discounted_price
-                                image
-                                image_2
-                                thumbnail
-                            }
-                        }
-                    `  
-                    };                
-                    fetch(API_ROOT, {
-                        method : "POST",
-                        body : JSON.stringify(queryBody),
-                        headers : {
-                            'Content-Type' : 'application/json',
-                            'Authorization' : `Bearer ${auth0Client.getIdToken()}`
-                        }
-                    }).then(res=>{
-                        return res.json();
-                    }).then(products =>{          
-                        this.props.getProducts({data:products.data.products});
-                    }).catch(err =>{
-                        throw err;
-                    }) 
+                    props.getProducts({data:props.cat_ids});
                 }
                 else
                 {
-                   this.setState({data:props.products.data,catID:null});
+                   this.setState({data:props.products,catID:null});
                 }
            }   
            else
            {
-               this.setState({data:props.products.data,catID:null});
+               this.setState({data:props.products,catID:null});
            }
            
        } 
        else{
-        let catids_arr = JSON.stringify(props.cat_ids);        
-        const queryBody = {
-        query:`
-            query{
-                products(cat_id:${catids_arr}){                  
-                    _id
-                    name
-                    description
-                    price
-                    discounted_price
-                    image
-                    image_2
-                    thumbnail
-                }
-            }
-        `  
-        };                
-        fetch(API_ROOT, {
-            method : "POST",
-            body : JSON.stringify(queryBody),
-            headers : {
-                'Content-Type' : 'application/json',
-                'Authorization' : `Bearer ${auth0Client.getIdToken()}`
-            }
-        }).then(res=>{
-            return res.json();
-        }).then(products =>{                                               
-            this.props.getProducts({data:products.data.products});
-        }).catch(err =>{
-            throw err;
-        }) 
+        props.getProducts({data:props.cat_ids});
        }
     }
     addtoCart(e){
-        console.log(e);
+        console.log(e.currentTarget.getAttribute('product_details'));
+        
     }
     render(){
         let products = [];
-        if(this.props.products.data !== undefined){
-            products=this.props.products.data;
+        if(this.props.products !== undefined){
+            products=this.props.products;
         }       
         return(             
             <div className="row">                       
              {
                     products.map((productsList, index) =>(                                              
-                        <div className="product_single_block col-md-6 col-lg-3 item pb-3">
+                        <div key={index} className="product_single_block col-md-6 col-lg-3 item pb-3">
                             <LinkContainer
                                 to={
                                 "/product/" +
@@ -151,10 +91,7 @@ class Products extends Component{
                                 ? productsList.discounted_price
                                 : productsList.price}
                             </h3>
-                            <Button onClick={this.addtoCart.bind(this)}>Add to cart</Button>
-                            {/* <button className="btn btn-sm" onClick={this.addtoCart.bind(this)}>
-                                Add to cart
-                            </button> */}
+                            <Button product_details={JSON.stringify(productsList)} onClick={this.addtoCart.bind(this)}>Add to cart</Button>                            
                         </div>
                     ))
                 }
@@ -170,9 +107,7 @@ const mapStateToProps = (state)=>{
 }
 const mapDispatchToProps = (dispatch)=>{
     return {
-        getProducts : (data)=>{
-            dispatch(getProducts(data));
-        }
+        getProducts : (data)=>{return getProducts(dispatch, data);}
     }
 }
 

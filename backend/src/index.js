@@ -31,6 +31,7 @@ app.use('/graphql',
     'rootValue' : graphQLResolvers,
     'graphiql' : true
     }));
+    
 
 mongoose.connect(`mongodb://localhost:27017/${process.env.MONGO_DB}`, { useNewUrlParser: true })
 .then(()=>{

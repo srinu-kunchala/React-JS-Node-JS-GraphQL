@@ -3,15 +3,17 @@ import NavBar from './NavBar/NavBar';
 import Callback from './Callback';
 import Department from './components/Departments/index';
 import Category from './components/Categories/index';
-import { Route } from 'react-router';
+
+import { Route, Switch } from 'react-router-dom';
 class App extends Component {
   render() {
     return (
       <div className="App">
         <NavBar />
-              
-        <Route path="/categories/:departmentName" component={Category} />        
-        <Route exact path='/callback' component={Callback}/>
+        <Switch>  
+          <Route path="/categories/:departmentName" component={Category} />        
+          <Route exact path='/callback' component={Callback}/>
+        </Switch> 
       </div>
     );
   }

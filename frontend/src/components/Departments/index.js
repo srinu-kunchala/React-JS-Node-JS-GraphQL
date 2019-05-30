@@ -1,8 +1,6 @@
 import React, { Component} from 'react';
-import auth0Client from '../../Auth';
-import {API_ROOT} from '../../api';
 import { connect } from 'react-redux';
-import { getDepartments } from '../../redux/actions/department';
+import { getAllDepartments} from '../../redux/actions/department';
 import { Link } from "react-router-dom";
 class Department extends Component{
     constructor(){
@@ -13,46 +11,20 @@ class Department extends Component{
     componentDidMount(){
         this.departmentsInfo();
     } 
-    componentWillReceiveProps(){
-        this.departmentsInfo();
-    } 
+    // componentWillReceiveProps(){
+    //     this.departmentsInfo();
+    // } 
     departmentsInfo(){
-        if(this.props.departments.data !== undefined && this.props.departments.data !== null){
-            this.setState({data:this.props.departments.data});  
+        if(this.props.departments !== undefined && this.props.departments !== null){
+            this.setState({data:this.props.departments});  
         }
-            const queryBody = {
-                query : `
-                    query{
-                        departments{
-                            _id
-                            name
-                            description
-                        }
-                    }
-                `
-            };
-            if(!this.state.data){        
-            fetch(API_ROOT, {
-                method:"POST",
-                body : JSON.stringify(queryBody),            
-                headers: {
-                    'Content-Type':'application/json', 
-                    'Authorization': `Bearer ${auth0Client.getIdToken()}` 
-                }
-            }).then(res=>{
-                return res.json();
-            }).then(departments =>{
-                this.props.getDepartments({data:departments.data.departments});                       
-            }).catch(err =>{
-                throw err;
-            })
-        } 
+        this.props.getAllDepartments(); 
     }
 
 render(){
     let departments=[];    
-    if(this.props.departments.data !== undefined)
-        departments=this.props.departments.data;
+    if(this.props.departments !== undefined)
+        departments=this.props.departments;
     return(
         <div className="departmentlist">
            <ul> {
@@ -73,9 +45,8 @@ const mapStateToProps = (state) =>{
 }
 const mapDispatchToProps = (dispatch) =>{
     return {
-        getDepartments: (data) =>{
-            dispatch(getDepartments(data));
-        }
+        //getDepartments: (data) =>{ dispatch(getDepartments(data)); },
+        getAllDepartments:(data) =>{getAllDepartments(dispatch,data);}
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Department);
