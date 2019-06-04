@@ -44,7 +44,8 @@ class Products extends Component{
        }
     }
     addtoCart(e){
-        console.log(e.currentTarget.getAttribute('product_details'));
+        let product_info =JSON.parse(e.currentTarget.getAttribute('product_details'));
+        console.log(product_info._id);
         
     }
     render(){
